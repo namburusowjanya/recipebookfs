@@ -1,0 +1,213 @@
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: #fffaf2;
+}
+
+button {
+  background: #ff914d;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+button:hover {
+  background: #ff7a26;
+}
+
+input, textarea, select {
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+}
+
+.navbar {
+  background: #ff914d;
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 15px;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 25px;
+}
+
+.recipes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.recipe-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+  position: relative;
+  cursor: pointer;
+}
+
+.recipe-card:hover {
+  transform: scale(1.05);
+}
+
+.recipe-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.recipe-card-content {
+  padding: 15px;
+}
+
+.recipe-card-content h3 {
+  margin: 0;
+  color: #ff914d;
+}
+
+.recipe-card-content p {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px 15px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: white;
+  padding: 20px;
+  width: 450px;
+  max-height: 80vh;
+  overflow-y: auto;
+  border-radius: 16px;
+}
+
+.modal-box img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+.auth-box {
+  width: 320px;
+  margin: 120px auto;
+  padding: 25px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  text-align: center;
+}
+.edit-btn {
+  background: #ff914d;
+  color: white;
+}
+
+.delete-btn {
+  background: #ff4d4d;
+  color: white;
+}
+
+.watch-btn {
+  background: #333;
+  color: white;
+}
+
+.category {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.8rem;
+  background: #ffe8d9;
+  padding: 4px 10px;
+  border-radius: 12px;
+  color: #ff7a26;
+}
+.hint-text {
+  font-size: 0.8rem;
+  color: #888;
+  text-align: center;
+  font-style: italic;
+  margin: 6px 0 10px;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.like-btn {
+  background: #ffe8d9;
+  color: #ff7a26;
+}
+
+.rating-stars {
+  font-size: 1.1rem;
+  margin: 4px 0;
+  color: #ff914d;
+}
+
+.author-name {
+  font-size: 0.8rem;
+  color: #777;
+  margin: 2px 0;
+}
+
+.side-actions {
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.side-actions button {
+  background-color: white;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 18px;
+  color: black;
+}
