@@ -72,7 +72,7 @@ export default function RecipeCard({ recipe, onClick, onEdit, onDelete }) {
             </span>
           ))}
           <span style={{ marginLeft: "5px" }}>
-            ({avgRating.toFixed(1)})
+            ({avgRating ? avgRating.toFixed(1) : "0.0"})
           </span>
         </div>
         <div>
