@@ -14,6 +14,8 @@ export default function AddRecipe({ onClose, onAdded }) {
   const [videoFile, setVideoFile] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
+  const [videoPreview, setVideoPreview] = useState(null);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -22,18 +24,13 @@ export default function AddRecipe({ onClose, onAdded }) {
       if (imageFile) {
         const formData = new FormData();
         formData.append("file", imageFile);
-        const res = await API.post("/upload/image", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        const res = await API.post("/upload/image", formData);
         finalImage = res.data.url;
       }
       if (videoFile) {
         const formData = new FormData();
         formData.append("file", videoFile);
-        const res = await API.post("/upload/video", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-
+        const res = await API.post("/upload/video", formData);
         finalVideo = res.data.url;
       }
       const payload = {
@@ -46,11 +43,7 @@ export default function AddRecipe({ onClose, onAdded }) {
       onAdded();
       onClose();
     } catch (err) {
-      if (err.response?.status === 401) {
-        alert("Please login to add a recipe");
-      } else {
-        alert("Failed to add recipe");
-      }
+      alert(err.response?.data?.message || "Failed to add recipe");
     }
   };
   return (
@@ -74,32 +67,64 @@ export default function AddRecipe({ onClose, onAdded }) {
             placeholder="Instructions"
             onChange={e => setForm({ ...form, instructions: e.target.value })}
           />
-          <h4>Upload Image</h4>
+          <h4>Image</h4>
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="preview"
+              style={{ width: "100%", borderRadius: "10px", marginBottom: "10px" }}
+            />
+          )}
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setImageFile(e.target.files[0])}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              setImageFile(file);
+              setImagePreview(URL.createObjectURL(file));
+              setImageUrl("");
+            }}
             disabled={imageUrl !== ""}
           />
           <p style={{ textAlign: "center" }}>OR</p>
           <input
             placeholder="Paste Image URL"
             value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
+            onChange={(e) => {
+              setImageUrl(e.target.value);
+              setImagePreview(e.target.value);
+              setImageFile(null);
+            }}
             disabled={imageFile !== null}
           />
-          <h4>Upload Video</h4>
+          <h4>Video</h4>
+          {videoPreview && (
+            <video
+              src={videoPreview}
+              controls
+              style={{ width: "100%", borderRadius: "10px", marginBottom: "10px" }}
+            />
+          )}
           <input
             type="file"
             accept="video/*"
-            onChange={(e) => setVideoFile(e.target.files[0])}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              setVideoFile(file);
+              setVideoPreview(URL.createObjectURL(file));
+              setVideoUrl("");
+            }}
             disabled={videoUrl !== ""}
           />
           <p style={{ textAlign: "center" }}>OR</p>
           <input
             placeholder="Paste Video URL"
             value={videoUrl}
-            onChange={(e) => setVideoUrl(e.target.value)}
+            onChange={(e) => {
+              setVideoUrl(e.target.value);
+              setVideoPreview(e.target.value);
+              setVideoFile(null);
+            }}
             disabled={videoFile !== null}
           />
           <select
@@ -126,5 +151,8 @@ const overlay = {
 const modal = {
   background: "#fff",
   padding: "20px",
-  width: "400px",
+  width: "420px",
+  maxHeight: "90vh",     
+  overflowY: "auto",   
+  borderRadius: "12px",
 };

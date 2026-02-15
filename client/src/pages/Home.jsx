@@ -51,35 +51,42 @@ export default function Home() {
     .filter(Boolean);
 
   const filteredRecipes = recipes
-    .map((r) => {
-      const nameMatch = r.name?.toLowerCase().includes(searchText);
-      const descMatch = r.description?.toLowerCase().includes(searchText);
-      const userMatch =
-        r.createdBy?.username?.toLowerCase().includes(searchText);
-      const categoryMatch =
-        category === "all" ? true : r.category === category;
-      const recipeIngredients =
-        r.ingredients?.map((i) => i.toLowerCase()) || [];
-      const matchedIngredients = ingredientList.filter((ing) =>
-        recipeIngredients.some((rIng) => rIng.includes(ing))
-      );
-      return {
-        recipe: r,
-        textMatch: nameMatch || descMatch || userMatch,
-        ingredientScore: matchedIngredients.length,
-        categoryMatch,
-      };
-    })
-    .filter((r) =>
-      r.categoryMatch &&
-      (
-        (!searchText && !ingredientList.length) ||
-        (!ingredientList.length && r.textMatch) ||
-        (ingredientList.length && r.ingredientScore > 0)
-      )
+  .map((r) => {
+    const nameMatch = r.name?.toLowerCase().includes(searchText);
+    const descMatch = r.description?.toLowerCase().includes(searchText);
+    const userMatch =
+      r.createdBy?.username?.toLowerCase().includes(searchText);
+    const categoryMatch =
+      category === "all" ? true : r.category === category;
+    const recipeIngredients =
+      r.ingredients?.map((i) => i.toLowerCase()) || [];
+    const matchedIngredients = ingredientList.filter((ing) =>
+      recipeIngredients.some((rIng) => rIng.includes(ing))
+    );
+    return {
+      recipe: r,
+      textMatch: nameMatch || descMatch || userMatch,
+      ingredientScore: matchedIngredients.length,
+      categoryMatch,
+    };
+  })
+  .filter((r) =>
+    r.categoryMatch &&
+    (
+      (ingredientList.length && r.ingredientScore > 0) ||
+      (!ingredientList.length && r.textMatch)
     )
-    .sort((a, b) => b.ingredientScore - a.ingredientScore)
-    .map((r) => r.recipe);
+  )
+  .sort((a, b) => {
+    if (b.ingredientScore !== a.ingredientScore) {
+      return b.ingredientScore - a.ingredientScore;
+    }
+    return b.textMatch - a.textMatch;
+  })
+  .map((r) => ({
+    ...r.recipe,
+    matchScore: r.ingredientScore
+  }));
   return (
     <>
       <Navbar />

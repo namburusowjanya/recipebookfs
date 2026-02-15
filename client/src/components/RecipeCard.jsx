@@ -61,6 +61,11 @@ export default function RecipeCard({ recipe, onClick, onEdit, onDelete }) {
         <button onClick={onClick}>💬</button>
       </div>
       <div className="recipe-card-content">
+        {recipe.matchScore > 0 && (
+          <p style={{ color: "green", fontSize: "0.8rem" }}>
+            Matches {recipe.matchScore} ingredients
+          </p>
+        )}
         <p className="hint-text">Click image to see more details</p>
         <h3>{recipe.name}</h3>
         <p>{recipe.description}</p>
