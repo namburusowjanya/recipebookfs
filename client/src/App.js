@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import MyRecipes from "./pages/MyRecipes";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Favorites from "./pages/Favorites";
 import { AuthProvider } from "./context/AuthContext";
 
 export default function App() {
@@ -26,7 +27,14 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/favorites"
+            element={
+              <ProtectedRoute>
+                <Favorites />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/admin"
             element={

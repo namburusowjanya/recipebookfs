@@ -23,8 +23,14 @@ export default function Navbar() {
               {user.username}
               {user.role === "admin" && " 👑"}
             </span>
+            <Link to="/" style={link}>
+              Home
+            </Link>
             <Link to="/my-recipes" style={link}>
               My Recipes
+            </Link>
+            <Link to="/favorites" style={link}>
+              My Favorites
             </Link>
             {user.role === "admin" && (
               <Link to="/admin" style={link}>

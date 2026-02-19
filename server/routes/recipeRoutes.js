@@ -103,6 +103,21 @@ router.post("/:id/review", auth, async (req, res) => {
   await recipe.save();
   res.json(recipe);
 });
+router.post("/:id/favorite", auth, async (req, res) => {
+  const recipe = await Recipe.findById(req.params.id);
+  const index = recipe.favorites.indexOf(req.user.id);
+  if (index === -1) {
+    recipe.favorites.push(req.user.id); 
+  } else {
+    recipe.favorites.splice(index, 1); 
+  }
+  await recipe.save();
+  res.json(recipe);
+});
+router.get("/favorites",auth,async(req,res)=>{
+  const recipes = await Recipe.find({ favorites: req.user.id }).populate("createdBy","username role");
+  res.json(recipes);
+})
 router.put("/:id", auth, async (req, res) => {
   const recipe = await Recipe.findById(req.params.id);
   if (!recipe) return res.status(404).json({ message: "Not found" });

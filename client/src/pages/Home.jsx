@@ -49,7 +49,32 @@ export default function Home() {
     .split(",")
     .map((i) => i.trim())
     .filter(Boolean);
-
+  const getRecommendations = () => {
+  return recipes
+    .map((r) => {
+      const ingredientScore = ingredientList.length
+        ? ingredientList.filter((ing) =>
+            r.ingredients?.some((i) =>
+              i.toLowerCase().includes(ing)
+            )
+          ).length
+        : 0;
+      const avgRating =
+        r.reviews?.length > 0
+          ? r.reviews.reduce((a, b) => a + b.rating, 0) /
+            r.reviews.length
+          : 0;
+      const popularity = r.likes?.length || 0;
+      const score =
+        ingredientScore * 3 +   
+        avgRating * 2 +        
+        popularity * 1;         
+      return { ...r, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
+  };
+  const recommendations = getRecommendations();
   const filteredRecipes = recipes
   .map((r) => {
     const nameMatch = r.name?.toLowerCase().includes(searchText);
@@ -90,6 +115,18 @@ export default function Home() {
   return (
     <>
       <Navbar />
+      <h2 style={{ textAlign: "center" }}>Recommended Recipes</h2>
+      <div style={grid}>
+        {recommendations.map((r) => (
+          <RecipeCard
+            key={r._id}
+            recipe={r}
+            onClick={() => setSelected(r)}
+            onEdit={() => setEditRecipe(r)}
+            onDelete={() => deleteRecipe(r._id)}
+          />
+        ))}
+      </div>
       <div style={filterBar}>
         <input
           placeholder="Search recipes or users..."
@@ -108,6 +145,7 @@ export default function Home() {
           <option value="all">All</option>
           <option value="veg">Veg</option>
           <option value="nonveg">Non-Veg</option>
+          <option value="dessert">Dessert</option>
         </select>
         {user && (
           <button onClick={() => setShowAdd(true)}>

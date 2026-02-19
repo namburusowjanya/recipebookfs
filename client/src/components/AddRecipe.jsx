@@ -132,6 +132,7 @@ export default function AddRecipe({ onClose, onAdded }) {
           >
             <option value="veg">Veg</option>
             <option value="nonveg">Non-Veg</option>
+            <option value="dessert">Dessert</option>
           </select>
           <button>Add</button>
           <button type="button" onClick={onClose}>Cancel</button>

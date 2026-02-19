@@ -4,6 +4,7 @@ import API from "../services/api";
 import "../styles/app.css";
 export default function RecipeCard({ recipe, onClick, onEdit, onDelete }) {
   const { user } = useContext(AuthContext);
+  const [isFavorite, setIsFavorite] = useState(false);
   const [likesCount, setLikesCount] = useState(
     recipe.likes ? recipe.likes.length : 0
   );
@@ -13,6 +14,19 @@ export default function RecipeCard({ recipe, onClick, onEdit, onDelete }) {
     (recipe.createdBy._id === user._id ||
       recipe.createdBy === user._id);
   const isAdmin = user?.role === "admin";
+  const handleFavorite = async (e) => {
+    e.stopPropagation();
+    if (!user) {
+      alert("Please login to add favorites");
+      return;
+    }
+    try {
+      await API.post(`/recipes/${recipe._id}/favorite`);
+      alert("recipe is added to favorites");
+    } catch (err) {
+      alert("Error adding to favorites");
+    }
+  };
   const handleLike = async (e) => {
     e.stopPropagation();
     if (!user) {
@@ -26,7 +40,7 @@ export default function RecipeCard({ recipe, onClick, onEdit, onDelete }) {
       alert(err.response?.data?.message || "Something went wrong");
     }
   };
- 
+  
   const handleWatchVideo = (e) => {
     e.stopPropagation();
     if (!recipe.video) {
@@ -59,6 +73,7 @@ export default function RecipeCard({ recipe, onClick, onEdit, onDelete }) {
         <button onClick={handleLike}>❤️{likesCount}</button>
         <button onClick={handleLike}>👎</button>
         <button onClick={onClick}>💬</button>
+        <button onClick={handleFavorite}>🧡</button>
       </div>
       <div className="recipe-card-content">
         {recipe.matchScore > 0 && (
